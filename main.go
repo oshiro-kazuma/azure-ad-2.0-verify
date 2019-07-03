@@ -54,6 +54,7 @@ func handlerIndex(w http.ResponseWriter, r *http.Request) {
 
           document.getElementById('result').insertAdjacentHTML('beforebegin', "<h3>id_token parse 結果</h3>");
           document.getElementById('result').insertAdjacentHTML('beforeend', JSON.stringify(json, null, 4));
+          document.getElementById('result').insertAdjacentHTML('afterend', "<pre>id token:\n" + idToken + "<pre>");
         });
     }
   </script>
