@@ -12,19 +12,19 @@ import (
 )
 
 var (
-	projectId string
-	clientId  string
+	tenantId string
+	clientId string
 )
 
 func init() {
-	projectId = os.Getenv("PROJECT_ID")
+	tenantId = os.Getenv("TENANT_ID")
 	clientId = os.Getenv("CLIENT_ID")
 
-	if projectId == "" || clientId == "" {
-		log.Fatal("PROJECT_ID and CLIENT_ID is required")
+	if tenantId == "" || clientId == "" {
+		log.Fatal("TENANT_ID and CLIENT_ID is required")
 	}
 
-	log.Printf("PROJECT_ID: %s, CLIENT_ID:%s", projectId, clientId)
+	log.Printf("TENANT_ID: %s, CLIENT_ID:%s", tenantId, clientId)
 }
 
 func main() {
@@ -60,7 +60,7 @@ func handlerIndex(w http.ResponseWriter, r *http.Request) {
   </script>
 </head>
 <body>
-<a href="https://login.microsoftonline.com/` + projectId + `/oauth2/v2.0/authorize?response_type=id_token&scope=openid%20profile&client_id=` + clientId + `&redirect_uri=https%3A%2F%2Flocalhost%3A3000%2Fauth%2Flogin%2Fcomplete&nonce=1234&response_mode=fragment">login</a>
+<a href="https://login.microsoftonline.com/` + tenantId + `/oauth2/v2.0/authorize?response_type=id_token&scope=openid%20profile&client_id=` + clientId + `&redirect_uri=https%3A%2F%2Flocalhost%3A3000%2Fauth%2Flogin%2Fcomplete&nonce=1234&response_mode=fragment">login</a>
 <pre id="result"></pre>
 </body>
 </html>`
@@ -79,7 +79,7 @@ func handlerParseIdToken(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// 公開鍵のセットを取得する
-	set, err := jwk.Fetch("https://login.microsoftonline.com/" + projectId + "/discovery/v2.0/keys")
+	set, err := jwk.Fetch("https://login.microsoftonline.com/" + tenantId + "/discovery/v2.0/keys")
 	if err != nil {
 		log.Printf("failed to parse JWK: %s", err)
 		return
